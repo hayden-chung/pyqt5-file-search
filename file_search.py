@@ -46,23 +46,31 @@ class FileSearchWindow(QMainWindow):
 
         win = QWidget()
         hbox1 = QHBoxLayout()
+        hbox2 = QHBoxLayout()
+        hbox3 = QHBoxLayout()
 
         # Can you use layout?
         file_search = self.setWindowTitle("File Search")
         self.setGeometry(100, 100, 400, 350)
-        hbox1.addWidget(file_search)
-        hbox1.addStretch()
+        # hbox1.addWidget(file_search)
+        # hbox1.addStretch()
 
         file_name_text = self.input_label = QLabel("Enter file name:", self)
         self.input_label.setGeometry(10, 20, 120, 30)
-        # hbox.addWidget(enter_box)
+        hbox1.addWidget(file_name_text)
+        hbox1.addStretch()
 
         self.input_text = QLineEdit(self)
         self.input_text.setGeometry(130, 20, 200, 30)
+        hbox1.addWidget(self.input_text)
+        hbox1.addStretch()
+
 
         self.root_button = QPushButton("Select Root Folder", self)
         self.root_button.setGeometry(130, 70, 200, 30)
         self.root_button.clicked.connect(self.select_root_folder)
+        hbox2.addWidget(self.root_button)
+        hbox2.addStretch()
 
         search_button = self.search_button = QPushButton("Search", self)
         self.search_button.setGeometry(150, 120, 100, 30)
@@ -73,13 +81,18 @@ class FileSearchWindow(QMainWindow):
 
         self.progress_label = QLabel("Progress:", self)
         self.progress_label.setGeometry(20, 170, 100, 30)
+        hbox3.addWidget(self.progress_label)
+        hbox3.addStretch()
 
         self.progress_bar = QProgressBar(self)
         self.progress_bar.setGeometry(130, 170, 240, 30)
         self.progress_bar.setValue(0)
+        hbox3.addWidget(self.progress_bar)
+        hbox3.addStretch()
 
         self.result_label = QLabel("Found File Paths:", self)
         self.result_label.setGeometry(20, 220, 200, 30)
+
 
         self.result_text = QTextEdit(self)
         self.result_text.setGeometry(20, 250, 350, 80)
@@ -89,8 +102,14 @@ class FileSearchWindow(QMainWindow):
 
         self.file_search_thread = None
 
-        win.setLayout(hbox1)
-        win.show
+        vbox = QHBoxLayout()
+        vbox.addLayout(hbox1)
+        vbox.addLayout(hbox2)
+        vbox.addLayout(hbox3)
+        
+        win.setLayout(vbox)
+        win.show()
+        sys.exit(app.exec_())
 
     def select_root_folder(self):
         root_directory = QFileDialog.getExistingDirectory(self, "Select Root Folder")
@@ -129,5 +148,4 @@ class FileSearchWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileSearchWindow()
-    window.show()
-    sys.exit(app.exec_())
+
